@@ -15,31 +15,29 @@ namespace Juros.Api.Api.V1
     public class ResultadoCalduloJurosController : ControllerBase
     {
         private readonly ILogger<ResultadoCalduloJurosController> _logger;
+        private readonly ITaxaJuros _taxaJuros;
 
-        public ResultadoCalduloJurosController(ILogger<ResultadoCalduloJurosController> logger)
+        public ResultadoCalduloJurosController(ILogger<ResultadoCalduloJurosController> logger, ITaxaJuros taxaJuros)
         {
             _logger = logger;
+            _taxaJuros = taxaJuros;
         }
 
-        [HttpGet]
-        [Route("taxaJuros")]
-        public double TaxaJuros()
-        {
-            double taxa = 0.01;
-
-            return taxa;
-        }
-
+        /// <summary>
+        /// Retorna o calculo dos Juros consumindo a API 1.
+        /// </summary>
+        /// <param name="valorInicial"></param>
+        /// <param name="tempo"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("calculaJuros")]
-        public async Task<HttpResponse> CalculaJuros(decimal valorInicial,int tempo)
+        public void CalculaJuros(decimal valorInicial,int tempo, TaxaJuros taxa)
         { 
-            var juros = Convert.ToDecimal(TaxaJuros());
+            var juros = Convert.ToDecimal(valorInicial);
+            var taxaDeJuros = Convert.ToDecimal(taxa);
             //Valor Final = Valor Inicial * (1 + juros) ^ Tempo
 
             //var valorFinal = valorInicial * 1 + juros * Math.Pow(tempo / 12);
-
-            //return await this.Create(valorFinal);
         }
     }
 }
